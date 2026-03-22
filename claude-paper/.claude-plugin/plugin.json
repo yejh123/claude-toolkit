@@ -1,0 +1,10 @@
+{
+  "name": "claude-paper",
+  "version": "1.0.0",
+  "description": "Academic research and writing pipeline: literature search, paper drafting, and pre-submission review.",
+  "author": {
+    "name": "Jingheng Ye"
+  },
+  "license": "MIT",
+  "keywords": ["academic", "paper", "research", "writing", "LaTeX", "review"]
+}

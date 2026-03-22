@@ -1,0 +1,10 @@
+{
+  "name": "claude-dev",
+  "version": "2.0.0",
+  "description": "Software development skills: debugging, TDD, code review, FastAPI, project planning, feature development, PR review, frontend design, and codebase comprehension. Includes specialized agents for code architecture, exploration, review, simplification, and analysis.",
+  "author": {
+    "name": "Jingheng Ye"
+  },
+  "license": "MIT",
+  "keywords": ["development", "debugging", "testing", "TDD", "code-review", "FastAPI", "planning", "feature-dev", "pr-review", "frontend-design", "codebase", "agents"]
+}

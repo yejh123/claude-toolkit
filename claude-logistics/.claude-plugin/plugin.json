@@ -1,0 +1,10 @@
+{
+  "name": "claude-logistics",
+  "version": "1.0.0",
+  "description": "Operational logistics skills: Google Forms creation via Apps Script, survey design, and questionnaire automation.",
+  "author": {
+    "name": "Jingheng Ye"
+  },
+  "license": "MIT",
+  "keywords": ["google-forms", "apps-script", "survey", "questionnaire", "feedback-form", "automation"]
+}

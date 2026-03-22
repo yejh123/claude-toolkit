@@ -1,0 +1,10 @@
+{
+  "name": "claude-note-cn",
+  "version": "1.0.0",
+  "description": "中文笔记技能：将论文、课程、演讲、技术文档和数学内容转化为结构化学习笔记。",
+  "author": {
+    "name": "Jingheng Ye"
+  },
+  "license": "MIT",
+  "keywords": ["note-taking", "chinese", "academic", "paper", "lecture", "talk", "math", "documentation"]
+}
