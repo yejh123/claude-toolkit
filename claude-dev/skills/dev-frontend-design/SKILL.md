@@ -1,42 +1,57 @@
 ---
 name: dev-frontend-design
-description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics.
-source: https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design
+description: Create distinctive, production-grade frontend interfaces with high design quality, solid architecture, and accessible, performant code. Use this skill when the user asks to build web components, pages, dashboards, data visualizations, or applications. Also use when the user is designing UI layouts, creating interactive widgets, building admin panels, implementing dark/light themes, or working on any frontend that needs to look polished and work well. Covers React (primary), Vue, Svelte, and vanilla HTML/CSS/JS. Generates creative, well-architected code that avoids generic AI aesthetics.
 ---
 
-This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Implement real working code with exceptional attention to aesthetic details and creative choices.
+Build production-grade frontend interfaces that are visually distinctive, well-architected, accessible, and performant. Default to React + TypeScript + Tailwind CSS unless the user specifies otherwise.
 
-The user provides frontend requirements: a component, page, application, or interface to build. They may include context about the purpose, audience, or technical constraints.
+## Before Coding
 
-## Design Thinking
+**Existing codebase?** Read the project's design tokens, component patterns, and styling conventions first. Extend and match what's there — don't override or introduce conflicting patterns.
 
-Before coding, understand the context and commit to a BOLD aesthetic direction:
-- **Purpose**: What problem does this interface solve? Who uses it?
-- **Tone**: Pick an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but design one that is true to the aesthetic direction.
-- **Constraints**: Technical requirements (framework, performance, accessibility).
-- **Differentiation**: What makes this UNFORGETTABLE? What's the one thing someone will remember?
+**Greenfield?** Commit to a clear aesthetic direction before writing code. Consider: who uses this, what's the tone (minimal, editorial, brutalist, retro-futuristic, industrial, playful, luxury, etc.), and what makes it memorable. Intentionality matters more than intensity — bold maximalism and refined minimalism both work when executed with precision.
 
-**CRITICAL**: Choose a clear conceptual direction and execute it with precision. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
+## Architecture
 
-Then implement working code (HTML/CSS/JS, React, Vue, etc.) that is:
-- Production-grade and functional
-- Visually striking and memorable
-- Cohesive with a clear aesthetic point-of-view
-- Meticulously refined in every detail
+Build components that compose cleanly:
 
-## Frontend Aesthetics Guidelines
+- **Composition over inheritance.** Favor compound components (`<Select>`, `<Select.Trigger>`, `<Select.Content>`) for complex UI with multiple configurable parts. This keeps APIs clean and avoids boolean-prop sprawl.
+- **Custom hooks** for reusable logic (`useDebounce`, `useMediaQuery`, `useIntersectionObserver`). Extract when two components share the same stateful pattern.
+- **State management:** local `useState` for component state, Context + `useReducer` for shared state that crosses 2+ levels. Reach for external stores only when Context genuinely becomes a bottleneck.
+- **Error boundaries** around independently-failing sections (data panels, charts, third-party widgets). Show a graceful fallback rather than crashing the entire page.
+- **TypeScript strictly.** Discriminated unions for variant props, generic components where the type flows from data, `as const` for literal config objects.
 
-Focus on:
-- **Typography**: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics; unexpected, characterful font choices. Pair a distinctive display font with a refined body font.
-- **Color & Theme**: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes.
-- **Motion**: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions. Use scroll-triggering and hover states that surprise.
-- **Spatial Composition**: Unexpected layouts. Asymmetry. Overlap. Diagonal flow. Grid-breaking elements. Generous negative space OR controlled density.
-- **Backgrounds & Visual Details**: Create atmosphere and depth rather than defaulting to solid colors. Add contextual effects and textures that match the overall aesthetic. Apply creative forms like gradient meshes, noise textures, geometric patterns, layered transparencies, dramatic shadows, decorative borders, custom cursors, and grain overlays.
+## Aesthetics
 
-NEVER use generic AI-generated aesthetics like overused font families (Inter, Roboto, Arial, system fonts), cliched color schemes (particularly purple gradients on white backgrounds), predictable layouts and component patterns, and cookie-cutter design that lacks context-specific character.
+Design with intent — every visual choice should reinforce the interface's purpose and tone.
 
-Interpret creatively and make unexpected choices that feel genuinely designed for the context. No design should be the same. Vary between light and dark themes, different fonts, different aesthetics. NEVER converge on common choices (Space Grotesk, for example) across generations.
+- **Typography:** Pair a distinctive display font with a refined body font. Use extreme contrast: weight 100–200 vs 700–900, size jumps of 3x+. Recommended by category — Code: JetBrains Mono, Fira Code; Editorial: Playfair Display, Fraunces; Technical: IBM Plex family; Startup: Clash Display, Cabinet Grotesk. System fonts are fine when chosen deliberately (e.g., for a native-feeling tool) — the problem is defaulting to them without thought.
+- **Color & Theme:** Define a cohesive palette through CSS variables or Tailwind config. A dominant color with one sharp accent outperforms a timid, evenly-distributed palette. For dark themes: ensure sufficient contrast ratios, use subtle elevation through lighter surface tones rather than shadows alone.
+- **Motion:** CSS transitions and animations first; JS animation libraries only when CSS can't express the interaction. One well-orchestrated page load with staggered reveals creates more delight than scattered micro-interactions. Always respect `prefers-reduced-motion`.
+- **Spatial composition:** Break out of predictable grids when it serves the content. Asymmetry, overlap, diagonal flow, generous negative space, or controlled density — choose based on the information hierarchy, not just what "looks different."
+- **Atmosphere:** Gradient meshes, noise textures, layered transparencies, grain overlays, decorative borders — use sparingly and only when they reinforce the aesthetic. A clean interface with perfect spacing can be more striking than one loaded with effects.
 
-**IMPORTANT**: Match implementation complexity to the aesthetic vision. Maximalist designs need elaborate code with extensive animations and effects. Minimalist or refined designs need restraint, precision, and careful attention to spacing, typography, and subtle details. Elegance comes from executing the vision well.
+## Performance
 
-Remember: Claude is capable of extraordinary creative work. Don't hold back, show what can truly be created when thinking outside the box and committing fully to a distinctive vision.
+- **Virtualize long lists** (hundreds+ items). Use `react-window`, `@tanstack/virtual`, or equivalent — rendering thousands of DOM nodes kills scroll performance in data-dense UIs.
+- **Code split** heavy routes and large components with `React.lazy()` + `Suspense`. Load visualization libraries, code editors, and markdown renderers on demand.
+- **Debounce** search inputs, resize handlers, and anything triggering expensive re-computation (300ms is a good default).
+- **Avoid request waterfalls.** Fetch independent data in parallel. Prefetch or cache-warm data the user is likely to need next.
+- **Memo judiciously.** `React.memo()` and `useMemo()` for components/computations that re-render frequently with unchanged props — but don't wrap everything reflexively. Profile first.
+
+## Accessibility
+
+Accessibility isn't a polish step — build it in from the start, because retrofitting it later costs much more effort.
+
+- **Semantic HTML:** Use `<nav>`, `<main>`, `<section>`, `<button>`, `<dialog>` — not `<div onClick>`. Maintain a logical heading hierarchy (`h1` → `h2` → `h3`).
+- **Keyboard navigation:** Every interactive element must be reachable and operable via keyboard. Trap focus inside modals. Manage focus when content changes dynamically.
+- **Visible focus states:** Style `:focus-visible` distinctly — don't remove outlines without replacing them. Users navigating by keyboard need to see where they are.
+- **ARIA:** Add `aria-label` on icon-only buttons, `aria-expanded` on toggles, `role` on custom widgets. But prefer native HTML semantics over ARIA — `<button>` beats `<div role="button">`.
+
+## Avoid
+
+- Generic "AI slop": purple gradients on white, card grids with rounded corners and drop shadows, the same layout every time
+- Defaulting to Inter/Roboto/Arial without considering the project's character
+- Prop drilling through 4+ levels — restructure with composition or context
+- Inline styles when a design token system exists
+- Premature abstraction of UI components — extract shared components after you see the pattern repeat, not before
